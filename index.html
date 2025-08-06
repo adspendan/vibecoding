@@ -44,145 +44,767 @@
     </script>
     
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #667eea;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .feature-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+            color: #667eea;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Terminal Styles */
+        .terminal {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .terminal-header {
+            background-color: #313131;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .terminal-close {
+            background-color: #ff5f56;
+        }
+        
+        .terminal-minimize {
+            background-color: #ffbd2e;
+        }
+        
+        .terminal-maximize {
+            background-color: #27c93f;
+        }
+        
+        .terminal-title {
+            color: #cccccc;
+            font-size: 14px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .terminal-body {
+            padding: 16px;
+            color: #f8f8f2;
+            font-size: 14px;
+            line-height: 1.5;
+            min-height: 300px;
+        }
+        
+        .terminal-prompt {
+            color: #50fa7b;
+            margin-right: 8px;
+        }
+        
+        .terminal-command {
+            color: #f8f8f2;
+        }
+        
+        .terminal-output {
+            color: #bd93f9;
+            margin: 8px 0;
+        }
+        
+        .terminal-comment {
+            color: #6272a4;
+            font-style: italic;
+        }
+        
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background-color: #f8f8f2;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+        
+        .terminal-highlight {
+            color: #ff79c6;
+        }
+        
+        .typing-animation {
+            overflow: hidden;
+            border-right: 2px solid #50fa7b;
+            white-space: nowrap;
+            animation: typing 3s steps(30, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #50fa7b }
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50">
     <!-- Navigation -->
-    <nav class="bg-purple-800 text-white p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="text-2xl font-bold">Vibe Coding Basics</div>
-            <div>
-                <a href="#what-is-vibe-coding" class="px-4 hover:text-purple-200">What is Vibe Coding?</a>
-                <a href="#vibe-coding-basics" class="px-4 hover:text-purple-200">Vibe Coding Basics</a>
-                <a href="#blog" class="px-4 hover:text-purple-200">Blog</a>
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-gradient">Vibe Coding Basics</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#features" class="nav-link text-gray-700 hover:text-purple-600">Features</a>
+                    <a href="#how-it-works" class="nav-link text-gray-700 hover:text-purple-600">How It Works</a>
+                    <a href="#curriculum" class="nav-link text-gray-700 hover:text-purple-600">Curriculum</a>
+                    <a href="#testimonials" class="nav-link text-gray-700 hover:text-purple-600">Testimonials</a>
+                    <a href="#faq" class="nav-link text-gray-700 hover:text-purple-600">FAQ</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="https://app.vibecodingbasics.xyz/login" class="text-gray-700 hover:text-purple-600">Log In</a>
+                    <a href="https://app.vibecodingbasics.xyz/signup" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-300">Start Free</a>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-purple-600 to-indigo-700 text-white py-20">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6">Master Vibe Coding Basics in 7 Days</h1>
-            <p class="text-xl mb-10 max-w-2xl mx-auto">Learn vibe coding techniques with our free challenge. No experience needed - just good vibes and curiosity!</p>
-            <a href="signup.html" class="bg-white text-purple-700 font-bold py-3 px-8 rounded-full text-lg hover:bg-purple-100 transition duration-300">Start Free Vibe Coding Challenge</a>
-        </div>
-    </section>
-
-    <!-- What is Vibe Coding Section -->
-    <section id="what-is-vibe-coding" class="py-16 bg-purple-50">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">What is Vibe Coding?</h2>
-            <div class="max-w-3xl mx-auto">
-                <p class="text-lg mb-6">Vibe coding is a modern approach to learning programming that focuses on creating a positive, intuitive coding experience. Unlike traditional coding education that can feel rigid and intimidating, vibe coding emphasizes:</p>
-                <ul class="list-disc pl-8 space-y-2 mb-8">
-                    <li>Intuitive learning that matches your natural thinking patterns</li>
-                    <li>Positive reinforcement and celebration of small wins</li>
-                    <li>Creative problem-solving with real-world applications</li>
-                    <li>Community support and collaborative learning</li>
-                </ul>
-                <p class="text-lg">Our vibe coding basics course is designed to make your first steps into programming feel natural, enjoyable, and empowering.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Vibe Coding Basics Section -->
-    <section id="vibe-coding-basics" class="py-16">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Vibe Coding Basics Curriculum</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold mb-4 text-purple-700">Day 1-2: Vibe Coding Mindset</h3>
-                    <p>Learn the core philosophy of vibe coding and how to approach problems with a positive, creative mindset.</p>
+    <section class="gradient-bg text-white py-20 md:py-32">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">Master Vibe Coding in 30 Days</h1>
+                    <p class="text-xl mb-8 opacity-90">The intuitive, fun way to learn programming with AI assistance. Start your free 7-day challenge today!</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="https://app.vibecodingbasics.xyz/signup" class="bg-white text-purple-700 font-bold py-3 px-8 rounded-lg text-lg hover:bg-gray-100 transition duration-300 text-center">Start Free Challenge</a>
+                        <a href="#how-it-works" class="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-white hover:text-purple-700 transition duration-300 text-center">How It Works</a>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold mb-4 text-purple-700">Day 3-4: Intuitive Syntax</h3>
-                    <p>Master programming basics through natural language patterns and intuitive code structures.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold mb-4 text-purple-700">Day 5-6: Creative Projects</h3>
-                    <p>Build fun, practical projects that reinforce your vibe coding skills through hands-on practice.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold mb-4 text-purple-700">Day 7: Vibe Coding Community</h3>
-                    <p>Connect with fellow vibe coders and learn how to continue your coding journey with support.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold mb-4 text-purple-700">AI Vibe Assistant</h3>
-                    <p>Get personalized help from our AI coding buddy whenever you need guidance or inspiration.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold mb-4 text-purple-700">Full 30-Day Challenge</h3>
-                    <p>Unlock advanced vibe coding techniques and build impressive projects after your free trial.</p>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="terminal float-animation">
+                        <div class="terminal-header">
+                            <div class="terminal-button terminal-close"></div>
+                            <div class="terminal-button terminal-minimize"></div>
+                            <div class="terminal-button terminal-maximize"></div>
+                            <div class="terminal-title">vibe-coding-basics — bash — 80x24</div>
+                        </div>
+                        <div class="terminal-body">
+                            <div><span class="terminal-prompt">$</span> <span class="terminal-command">vibe start --day=1</span></div>
+                            <div class="terminal-output">Initializing Vibe Coding Environment...</div>
+                            <div class="terminal-output">Loading Day 1: Vibe Coding Mindset</div>
+                            <div class="terminal-comment">// Welcome to your coding journey!</div>
+                            <div class="terminal-comment">// Let's start with the basics of vibe coding</div>
+                            <div><span class="terminal-prompt">$</span> <span class="terminal-command">learn --concept="vibe-coding"</span></div>
+                            <div class="terminal-output">Vibe coding is an approach that makes learning...</div>
+                            <div class="terminal-output">...programming intuitive and enjoyable</div>
+                            <div><span class="terminal-prompt">$</span> <span class="terminal-command">create --project="hello-world"</span></div>
+                            <div class="terminal-output">Creating project: hello-world</div>
+                            <div class="terminal-output">✅ Project created successfully</div>
+                            <div><span class="terminal-prompt">$</span> <span class="terminal-command">vibebuddy --ask="How do I print text?"</span></div>
+                            <div class="terminal-output">VibeBuddy: Use console.log() to print text!</div>
+                            <div><span class="terminal-prompt">$</span> <span class="terminal-command typing-animation">console.log("Hello, Vibe Coder!")<span class="terminal-cursor"></span></span></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Blog Section -->
-    <section id="blog" class="py-16 bg-purple-50">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Vibe Coding Resources</h2>
+    <!-- Features Section -->
+    <section id="features" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Why Choose Vibe Coding Basics?</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Our unique approach makes learning to code intuitive, enjoyable, and effective</p>
+            </div>
+            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <article class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold mb-2 text-purple-700">What is Vibe Coding? A Beginner's Guide</h3>
-                    <p class="mb-4">Discover the philosophy behind vibe coding and why it's revolutionizing how beginners learn programming...</p>
-                    <a href="#" class="text-purple-600 font-semibold">Read More →</a>
-                </article>
-                <article class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold mb-2 text-purple-700">Why Vibe Coding Basics is the Easiest Way to Learn Code</h3>
-                    <p class="mb-4">Learn how our approach removes traditional barriers to coding education and makes learning enjoyable...</p>
-                    <a href="#" class="text-purple-600 font-semibold">Read More →</a>
-                </article>
-                <article class="bg-white p-6 rounded-lg shadow-lg">
-                    <h3 class="text-xl font-bold mb-2 text-purple-700">From Zero to Vibe Coder in 30 Days</h3>
-                    <p class="mb-4">Follow our complete roadmap that takes complete beginners to confident coders in just one month...</p>
-                    <a href="#" class="text-purple-600 font-semibold">Read More →</a>
-                </article>
+                <div class="feature-card bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <div class="feature-icon w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-6 text-2xl text-purple-600">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Intuitive Learning</h3>
+                    <p class="text-gray-600">Our vibe coding approach matches your natural thinking patterns, making complex concepts feel simple and intuitive.</p>
+                </div>
+                
+                <div class="feature-card bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <div class="feature-icon w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-6 text-2xl text-purple-600">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">AI-Powered Assistance</h3>
+                    <p class="text-gray-600">Stuck on a problem? Our AI VibeBuddy is ready to help 24/7 with personalized guidance and explanations.</p>
+                </div>
+                
+                <div class="feature-card bg-white p-8 rounded-xl shadow-lg card-hover">
+                    <div class="feature-icon w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-6 text-2xl text-purple-600">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Learn by Doing</h3>
+                    <p class="text-gray-600">Build real projects from day one. Our hands-on approach ensures you develop practical skills that stick.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">How Vibe Coding Works</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">A simple, effective approach to learning programming</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center mb-12">
+                    <div class="md:w-1/3 mb-6 md:mb-0 text-center">
+                        <div class="w-20 h-20 rounded-full bg-purple-600 text-white flex items-center justify-center text-2xl font-bold mx-auto mb-4">1</div>
+                        <h3 class="text-xl font-bold mb-2">Start Free Challenge</h3>
+                    </div>
+                    <div class="md:w-1/3 mb-6 md:mb-0 text-center">
+                        <div class="w-20 h-20 rounded-full bg-purple-600 text-white flex items-center justify-center text-2xl font-bold mx-auto mb-4">2</div>
+                        <h3 class="text-xl font-bold mb-2">Learn Daily Lessons</h3>
+                    </div>
+                    <div class="md:w-1/3 text-center">
+                        <div class="w-20 h-20 rounded-full bg-purple-600 text-white flex items-center justify-center text-2xl font-bold mx-auto mb-4">3</div>
+                        <h3 class="text-xl font-bold mb-2">Unlock Full Course</h3>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <div class="tabs flex mb-8 border-b">
+                        <button class="tab-btn px-6 py-3 font-medium text-purple-600 border-b-2 border-purple-600 focus:outline-none" data-tab="day1">Day 1-3: Foundations</button>
+                        <button class="tab-btn px-6 py-3 font-medium text-gray-600 hover:text-purple-600 focus:outline-none" data-tab="day4">Day 4-7: Building</button>
+                        <button class="tab-btn px-6 py-3 font-medium text-gray-600 hover:text-purple-600 focus:outline-none" data-tab="day8">Day 8-30: Mastery</button>
+                    </div>
+                    
+                    <div id="day1" class="tab-content active">
+                        <h3 class="text-2xl font-bold mb-4">Days 1-3: Vibe Coding Foundations</h3>
+                        <p class="text-gray-600 mb-6">Start with the core philosophy of vibe coding and basic programming concepts. You'll learn:</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span>The vibe coding mindset and approach to problem-solving</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span>Basic syntax and structure that feels intuitive</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span>How to use the AI VibeBuddy assistant effectively</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div id="day4" class="tab-content">
+                        <h3 class="text-2xl font-bold mb-4">Days 4-7: Building Your First Projects</h3>
+                        <p class="text-gray-600 mb-6">Apply what you've learned by building simple but functional projects:</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span>Create a personal portfolio page</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span>Build a simple interactive game</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span>Develop a basic to-do list application</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div id="day8" class="tab-content">
+                        <h3 class="text-2xl font-bold mb-4">Days 8-30: Vibe Coding Mastery</h3>
+                        <p class="text-gray-600 mb-6">Unlock advanced concepts and build impressive projects with the full course:</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span>Advanced data structures and algorithms</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span>API integration and database management</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                <span>Full-stack development and deployment</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curriculum Section -->
+    <section id="curriculum" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Vibe Coding Curriculum</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">A carefully structured learning path from beginner to confident coder</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="bg-purple-600 text-white p-6">
+                            <h3 class="text-xl font-bold">Free 7-Day Challenge</h3>
+                        </div>
+                        <div class="p-6">
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold mr-3 flex-shrink-0">1</div>
+                                    <div>
+                                        <h4 class="font-bold">Vibe Coding Mindset</h4>
+                                        <p class="text-sm text-gray-600">Introduction to the philosophy and approach</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold mr-3 flex-shrink-0">2</div>
+                                    <div>
+                                        <h4 class="font-bold">Intuitive Syntax</h4>
+                                        <p class="text-sm text-gray-600">Learning code that feels natural</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold mr-3 flex-shrink-0">3</div>
+                                    <div>
+                                        <h4 class="font-bold">Variables & Data</h4>
+                                        <p class="text-sm text-gray-600">Storing and manipulating information</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold mr-3 flex-shrink-0">4</div>
+                                    <div>
+                                        <h4 class="font-bold">Functions & Logic</h4>
+                                        <p class="text-sm text-gray-600">Creating reusable code blocks</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold mr-3 flex-shrink-0">5</div>
+                                    <div>
+                                        <h4 class="font-bold">Your First Project</h4>
+                                        <p class="text-sm text-gray-600">Building a simple interactive app</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold mr-3 flex-shrink-0">6</div>
+                                    <div>
+                                        <h4 class="font-bold">Working with APIs</h4>
+                                        <p class="text-sm text-gray-600">Connecting to external data sources</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold mr-3 flex-shrink-0">7</div>
+                                    <div>
+                                        <h4 class="font-bold">Next Steps</h4>
+                                        <p class="text-sm text-gray-600">Planning your coding journey ahead</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="mt-6 text-center">
+                                <a href="https://app.vibecodingbasics.xyz/signup" class="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-300">Start Free Challenge</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="bg-gradient-to-r from-purple-600 to-indigo-700 text-white p-6">
+                            <h3 class="text-xl font-bold">Full 30-Day Course</h3>
+                            <p class="text-sm opacity-80">Unlock after free trial</p>
+                        </div>
+                        <div class="p-6">
+                            <ul class="space-y-4">
+                                <li class="flex items-start opacity-50">
+                                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 font-bold mr-3 flex-shrink-0">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold">Advanced Data Structures</h4>
+                                        <p class="text-sm text-gray-600">Arrays, objects, and more complex data</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start opacity-50">
+                                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 font-bold mr-3 flex-shrink-0">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold">DOM Manipulation</h4>
+                                        <p class="text-sm text-gray-600">Creating dynamic web pages</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start opacity-50">
+                                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 font-bold mr-3 flex-shrink-0">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold">Asynchronous Programming</h4>
+                                        <p class="text-sm text-gray-600">Working with promises and async/await</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start opacity-50">
+                                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 font-bold mr-3 flex-shrink-0">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold">State Management</h4>
+                                        <p class="text-sm text-gray-600">Handling complex application state</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start opacity-50">
+                                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 font-bold mr-3 flex-shrink-0">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold">Backend Development</h4>
+                                        <p class="text-sm text-gray-600">Server-side programming basics</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start opacity-50">
+                                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 font-bold mr-3 flex-shrink-0">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold">Database Integration</h4>
+                                        <p class="text-sm text-gray-600">Storing and retrieving data</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start opacity-50">
+                                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 font-bold mr-3 flex-shrink-0">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold">Full-Stack Project</h4>
+                                        <p class="text-sm text-gray-600">Build a complete application</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="mt-6 text-center">
+                                <button class="inline-block bg-gradient-to-r from-purple-600 to-indigo-700 text-white px-6 py-3 rounded-lg hover:opacity-90 transition duration-300">Unlock Full Course - $49</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">What Our Students Say</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Real stories from people who learned to code with Vibe Coding Basics</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Sarah Johnson</h4>
+                            <div class="text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"I tried learning to code multiple times but always gave up. Vibe Coding Basics made it click for me. The intuitive approach and AI help kept me motivated!"</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Mike" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Mike Chen</h4>
+                            <div class="text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"The 7-day challenge got me hooked! I upgraded to the full course and now I'm building my own web applications. Best investment I've made!"</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emma" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Emma Rodriguez</h4>
+                            <div class="text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"As a complete beginner, I was intimidated by coding. Vibe Coding Basics made it accessible and fun. I'm now a developer at a tech startup!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Everything you need to know about Vibe Coding Basics</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6 border-b">
+                        <button class="flex justify-between items-center w-full text-left faq-question">
+                            <h3 class="text-lg font-bold">What is vibe coding exactly?</h3>
+                            <i class="fas fa-chevron-down text-purple-600"></i>
+                        </button>
+                        <div class="faq-answer hidden mt-4 text-gray-600">
+                            <p>Vibe coding is a modern approach to learning programming that focuses on creating a positive, intuitive coding experience. Unlike traditional coding education that can feel rigid and intimidating, vibe coding emphasizes natural learning patterns, creative problem-solving, and positive reinforcement.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 border-b">
+                        <button class="flex justify-between items-center w-full text-left faq-question">
+                            <h3 class="text-lg font-bold">Do I need any prior coding experience?</h3>
+                            <i class="fas fa-chevron-down text-purple-600"></i>
+                        </button>
+                        <div class="faq-answer hidden mt-4 text-gray-600">
+                            <p>Not at all! Vibe Coding Basics is designed specifically for complete beginners. We start from zero and build your skills gradually. Our intuitive approach makes it easy for anyone to learn, regardless of their background.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 border-b">
+                        <button class="flex justify-between items-center w-full text-left faq-question">
+                            <h3 class="text-lg font-bold">How does the AI VibeBuddy work?</h3>
+                            <i class="fas fa-chevron-down text-purple-600"></i>
+                        </button>
+                        <div class="faq-answer hidden mt-4 text-gray-600">
+                            <p>The AI VibeBuddy is your personal coding assistant available 24/7. When you're stuck on a problem or need clarification, simply ask a question, and the AI will provide helpful explanations, code examples, and guidance tailored to your current lesson and skill level.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 border-b">
+                        <button class="flex justify-between items-center w-full text-left faq-question">
+                            <h3 class="text-lg font-bold">What happens after the 7-day free challenge?</h3>
+                            <i class="fas fa-chevron-down text-purple-600"></i>
+                        </button>
+                        <div class="faq-answer hidden mt-4 text-gray-600">
+                            <p>After completing the 7-day free challenge, you'll have the option to unlock the full 30-day course for a one-time payment of $49. This gives you access to all remaining lessons, advanced projects, and continued AI assistance.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <button class="flex justify-between items-center w-full text-left faq-question">
+                            <h3 class="text-lg font-bold">Can I really learn to code in 30 days?</h3>
+                            <i class="fas fa-chevron-down text-purple-600"></i>
+                        </button>
+                        <div class="faq-answer hidden mt-4 text-gray-600">
+                            <p>While 30 days won't make you an expert programmer, it will give you a solid foundation and the ability to build basic web applications. Our curriculum is designed to teach you practical skills that you can immediately apply. Many students go on to get jobs or build their own projects after completing our course.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="bg-gradient-to-r from-purple-600 to-indigo-700 text-white py-16">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold mb-6">Ready to Master Vibe Coding Basics?</h2>
-            <p class="text-xl mb-10 max-w-2xl mx-auto">Join thousands of happy learners who discovered their coding passion through our vibe coding approach</p>
-            <a href="signup.html" class="bg-white text-purple-700 font-bold py-3 px-8 rounded-full text-lg hover:bg-purple-100 transition duration-300">Start Your Free 7-Day Challenge</a>
+    <section class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Start Your Vibe Coding Journey?</h2>
+            <p class="text-xl mb-10 max-w-2xl mx-auto opacity-90">Join thousands of happy learners who discovered their coding passion through our vibe coding approach</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="https://app.vibecodingbasics.xyz/signup" class="bg-white text-purple-700 font-bold py-3 px-8 rounded-lg text-lg hover:bg-gray-100 transition duration-300">Start Free 7-Day Challenge</a>
+                <a href="#curriculum" class="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-white hover:text-purple-700 transition duration-300">View Curriculum</a>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
                     <h3 class="text-xl font-bold mb-4">Vibe Coding Basics</h3>
-                    <p>Making coding accessible and enjoyable for everyone through our unique vibe coding approach.</p>
+                    <p class="text-gray-400">Making coding accessible and enjoyable for everyone through our unique vibe coding approach.</p>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
-                    <ul>
-                        <li><a href="#what-is-vibe-coding" class="hover:text-purple-300">What is Vibe Coding?</a></li>
-                        <li><a href="#vibe-coding-basics" class="hover:text-purple-300">Vibe Coding Basics</a></li>
-                        <li><a href="#blog" class="hover:text-purple-300">Resources</a></li>
+                    <h3 class="text-lg font-bold mb-4">Product</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-gray-400 hover:text-white">Features</a></li>
+                        <li><a href="#curriculum" class="text-gray-400 hover:text-white">Curriculum</a></li>
+                        <li><a href="#how-it-works" class="text-gray-400 hover:text-white">How It Works</a></li>
+                        <li><a href="https://app.vibecodingbasics.xyz/signup" class="text-gray-400 hover:text-white">Pricing</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold mb-4">Contact</h3>
-                    <p>hello@vibecodingbasics.xyz</p>
-                    <div class="mt-4">
-                        <a href="#" class="text-white hover:text-purple-300 mx-2">Twitter</a>
-                        <a href="#" class="text-white hover:text-purple-300 mx-2">Instagram</a>
-                        <a href="#" class="text-white hover:text-purple-300 mx-2">GitHub</a>
+                    <h3 class="text-lg font-bold mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Community</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Success Stories</a></li>
+                        <li><a href="#faq" class="text-gray-400 hover:text-white">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Connect</h3>
+                    <p class="text-gray-400 mb-4">hello@vibecodingbasics.xyz</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-github text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube text-xl"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="mt-8 pt-8 border-t border-gray-700 text-center">
-                <p>© 2025 vibe coding basics xyz. All rights reserved.</p>
+            <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
+                <p>&copy; 2023 Vibe Coding Basics. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <script src="assets/js/main.js"></script>
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('text-purple-600', 'border-b-2', 'border-purple-600');
+                    btn.classList.add('text-gray-600');
+                });
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Add active class to clicked button and corresponding content
+                button.classList.remove('text-gray-600');
+                button.classList.add('text-purple-600', 'border-b-2', 'border-purple-600');
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // FAQ functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('i');
+                
+                answer.classList.toggle('hidden');
+                
+                if (answer.classList.contains('hidden')) {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                } else {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                }
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
