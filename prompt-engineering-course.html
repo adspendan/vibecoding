@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering Prompt Engineering for AI Development</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            overflow: hidden;
+            background-color: #ffffff;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .header {
+            background-color: #003366;
+            color: white;
+            padding: 20px 70px;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 700;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 30px 70px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        .navigation {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background-color: rgba(0, 51, 102, 0.8);
+            border-radius: 30px;
+            padding: 10px;
+            z-index: 1000;
+        }
+        .nav-button {
+            display: block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #4dabf7;
+            color: white;
+            border: none;
+            margin: 5px 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        .nav-button:hover {
+            background-color: #003366;
+        }
+        .slide-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 51, 102, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            z-index: 1000;
+        }
+        .highlight {
+            color: #003366;
+            font-weight: 600;
+        }
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .module-card {
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 5px solid #4dabf7;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .module-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #003366;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .module-title .material-icons {
+            margin-right: 10px;
+            color: #4dabf7;
+        }
+        .module-description {
+            font-size: 18px;
+            line-height: 1.4;
+        }
+        .key-points {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .point {
+            display: flex;
+            align-items: flex-start;
+        }
+        .point .material-icons {
+            color: #4dabf7;
+            margin-right: 10px;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .point-text {
+            font-size: 20px;
+            line-height: 1.4;
+        }
+        .image-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .components-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .component-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .component-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #4dabf7;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .component-icon .material-icons {
+            font-size: 30px;
+            color: white;
+        }
+        .component-details {
+            flex-grow: 1;
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .component-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #003366;
+            margin-bottom: 5px;
+        }
+        .component-description {
+            font-size: 18px;
+            color: #333;
+        }
+        .techniques-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .technique-card {
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .technique-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .technique-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #4dabf7;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .technique-icon .material-icons {
+            font-size: 28px;
+            color: white;
+        }
+        .technique-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #003366;
+        }
+        .technique-description {
+            font-size: 20px;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        .technique-example {
+            background-color: white;
+            border-radius: 6px;
+            padding: 12px;
+            border-left: 3px solid #4dabf7;
+            font-size: 18px;
+        }
+        .four-s-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .s-card {
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: flex-start;
+        }
+        .s-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #4dabf7;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .s-icon .material-icons {
+            font-size: 28px;
+            color: white;
+        }
+        .s-content {
+            flex-grow: 1;
+        }
+        .s-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #003366;
+            margin-bottom: 8px;
+        }
+        .s-description {
+            font-size: 18px;
+            line-height: 1.4;
+        }
+        .applications-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            flex-grow: 1;
+        }
+        .application-card {
+            background-color: #f0f7ff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .application-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .application-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #4dabf7;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .application-icon .material-icons {
+            font-size: 32px;
+            color: white;
+        }
+        .application-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #003366;
+        }
+        .model-cards {
+            display: flex;
+            gap: 20px;
+            flex-grow: 1;
+        }
+        .model-card {
+            flex: 1;
+            background-color: #f0f7ff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+        }
+        .model-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .model-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #4dabf7;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .model-icon .material-icons {
+            font-size: 28px;
+            color: white;
+        }
+        .model-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #003366;
+        }
+        .model-features {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        .feature {
+            display: flex;
+            align-items: flex-start;
+        }
+        .feature .material-icons {
+            color: #4dabf7;
+            margin-right: 10px;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .feature-text {
+            font-size: 18px;
+            line-height: 1.4;
+        }
+        .case-studies-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            flex-grow: 1;
+        }
+        .case-card {
+            background-color: #f0f7ff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .case-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .case-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #4dabf7;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .case-icon .material-icons {
+            font-size: 32px;
+            color: white;
+        }
+        .case-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #003366;
+        }
+        .case-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .case-scenario {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #4dabf7;
+        }
+        .scenario-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #003366;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .scenario-title .material-icons {
+            margin-right: 10px;
+            color: #4dabf7;
+            font-size: 22px;
+        }
+        .scenario-text {
+            font-size: 18px;
+            line-height: 1.4;
+        }
+        .lessons-learned {
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: auto;
+        }
+        .lessons-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .lessons-title .material-icons {
+            margin-right: 10px;
+            color: #4caf50;
+            font-size: 22px;
+        }
+        .lessons-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .lesson-item {
+            display: flex;
+            align-items: flex-start;
+        }
+        .lesson-item .material-icons {
+            color: #4caf50;
+            margin-right: 10px;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .lesson-text {
+            font-size: 18px;
+            line-height: 1.4;
+        }
+        .conclusion-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            flex-grow: 1;
+        }
+        .section-card {
+            background-color: #f0f7ff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .section-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #4dabf7;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .section-icon .material-icons {
+            font-size: 32px;
+            color: white;
+        }
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #003366;
+        }
+        .resources-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: auto;
+        }
+        .resource-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .resource-item .material-icons {
+            color: #4dabf7;
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        .resource-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #003366;
+        }
+        .next-steps {
+            grid-column: span 2;
+            background-color: #e8f5e9;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+        }
+        .next-steps-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .next-steps-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #4caf50;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .next-steps-icon .material-icons {
+            font-size: 32px;
+            color: white;
+        }
+        .next-steps-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #2e7d32;
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .step-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background-color: #4caf50;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .step-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-button" onclick="scrollToSlide(1)"><i class="material-icons">arrow_upward</i></button>
+        <button class="nav-button" onclick="scrollToSlide(2)"><i class="material-icons">arrow_downward</i></button>
+    </div>
+    
+    <div class="slide-indicator">
+        Slide 1 of 15
+    </div>
+
+    <!-- Slide 1: Title Slide -->
+    <div id="slide1" class="slide">
+        <div class="header">
+            <h1 class="title">Mastering Prompt Engineering for AI Development</h1>
+        </div>
+        <div class="content" style="justify-content: center; align-items: center; text-align: center;">
+            <div style="max-width: 800px;">
+                <h2 style="font-size: 36px; color: #003366; margin-bottom: 30px;">A Comprehensive Guide to Crafting Effective AI Instructions</h2>
+                <div style="font-size: 24px; color: #555; margin-bottom: 40px;">
+                    Learn the art and science of communicating with AI models
+                </div>
+                <div style="display: flex; justify-content: center; gap: 30px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 48px; color: #4dabf7; margin-bottom: 10px;">
+                            <i class="material-icons" style="font-size: 48px;">psychology</i>
+                        </div>
+                        <div style="font-size: 20px; font-weight: 600;">8 Modules</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 48px; color: #4dabf7; margin-bottom: 10px;">
+                            <i class="material-icons" style="font-size: 48px;">school</i>
+                        </div>
+                        <div style="font-size: 20px; font-weight: 600;">Beginner to Advanced</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 48px; color: #4dabf7; margin-bottom: 10px;">
+                            <i class="material-icons" style="font-size: 48px;">code</i>
+                        </div>
+                        <div style="font-size: 20px; font-weight: 600;">Practical Examples</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Course Overview -->
+    <div id="slide2" class="slide">
+        <div class="header">
+            <h1 class="title">Course Overview</h1>
+        </div>
+        <div class="content">
+            <div class="module-grid">
+                <div class="module-card">
+                    <h2 class="module-title">
+                        <i class="material-icons">lightbulb</i>
+                        Module 1: Introduction
+                    </h2>
+                    <p class="module-description">
+                        Definition and core principles of prompt engineering, evolution of prompting
+                    </p>
+                </div>
+                <div class="module-card">
+                    <h2 class="module-title">
+                        <i class="material-icons">visibility</i>
+                        Module 2: Context Windows
+                    </h2>
+                    <p class="module-description">
+                        Understanding tokens, managing context effectively
+                    </p>
+                </div>
+                <div class="module-card">
+                    <h2 class="module-title">
+                        <i class="material-icons">construction</i>
+                        Module 3: Effective Prompts
+                    </h2>
+                    <p class="module-description">
+                        Minimum viable prompt components, advanced elements
+                    </p>
+                </div>
+                <div class="module-card">
+                    <h2 class="module-title">
+                        <i class="material-icons">architecture</i>
+                        Module 4: Methodologies
+                    </h2>
+                    <p class="module-description">
+                        The Four S's Framework, iterative prompting
+                    </p>
+                </div>
+                <div class="module-card">
+                    <h2 class="module-title">
+                        <i class="material-icons">style</i>
+                        Module 5: Prompting Styles
+                    </h2>
+                    <p class="module-description">
+                        Zero-shot, one-shot, few-shot, advanced techniques
+                    </p>
+                </div>
+                <div class="module-card">
+                    <h2 class="module-title">
+                        <i class="material-icons">integration_instructions</i>
+                        Module 6: Applications
+                    </h2>
+                    <p class="module-description">
+                        Development workflows, Retrieval Augmented Generation
+                    </p>
+                </div>
+                <div class="module-card">
+                    <h2 class="module-title">
+                        <i class="material-icons">compare</i>
+                        Module 7: Model Considerations
+                    </h2>
+                    <p class="module-description">
+                        Working with different AI models, tool integration
+                    </p>
+                </div>
+                <div class="module-card">
+                    <h2 class="module-title">
+                        <i class="material-icons">cases</i>
+                        Module 8: Case Studies
+                    </h2>
+                    <p class="module-description">
+                        Real-world examples and lessons learned
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Module 1: Introduction to Prompt Engineering -->
+    <div id="slide3" class="slide">
+        <div class="header">
+            <h1 class="title">Module 1: Introduction to Prompt Engineering</h1>
+        </div>
+        <div class="content" style="display: flex; gap: 40px;">
+            <div style="flex: 3;">
+                <div style="margin-bottom: 25px;">
+                    <h2 style="font-size: 24px; font-weight: 600; color: #003366; margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="material-icons" style="margin-right: 10px; color: #4dabf7; font-size: 28px;">lightbulb</i>
+                        What is Prompt Engineering?
+                    </h2>
+                    <div class="key-points">
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text"><span class="highlight">Definition:</span> Crafting effective instructions to get optimal results from AI language models</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text"><span class="highlight">Why it matters:</span> Difference between generic responses and getting exactly what you need</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <h2 style="font-size: 24px; font-weight: 600; color: #003366; margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="material-icons" style="margin-right: 10px; color: #4dabf7; font-size: 28px;">psychology</i>
+                        Core Principles
+                    </h2>
+                    <div class="key-points">
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text"><span class="highlight">Vibe coding is prompting</span> whatever you're doing</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">LLMs are <span class="highlight">"pretty stupid"</span> and need clear, well-structured instructions</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h2 style="font-size: 24px; font-weight: 600; color: #003366; margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="material-icons" style="margin-right: 10px; color: #4dabf7; font-size: 28px;">history</i>
+                        Evolution of Prompting
+                    </h2>
+                    <div class="key-points">
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">Changed from early LLMs to current models</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">Good prompting <span class="highlight">reduces cost and complexity</span> in AI systems</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="flex: 2; display: flex; flex-direction: column; justify-content: space-between;">
+                <div class="image-container">
+                    <img src="https://sfile.chatglm.cn/images-ppt/39fc59b82808.jpg" alt="Prompt Engineering Concept">
+                </div>
+                <div style="background-color: #f0f7ff; border-left: 4px solid #4dabf7; padding: 15px 20px; border-radius: 4px;">
+                    <p style="font-size: 20px; font-style: italic; color: #003366;">"The practice of crafting effective instructions to get optimal results from AI language models"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Module 2: Understanding Context Windows -->
+    <div id="slide4" class="slide">
+        <div class="header">
+            <h1 class="title">Module 2: Understanding Context Windows</h1>
+        </div>
+        <div class="content" style="display: flex; gap: 40px;">
+            <div style="flex: 1;">
+                <div style="margin-bottom: 25px;">
+                    <h2 style="font-size: 24px; font-weight: 600; color: #003366; margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="material-icons" style="margin-right: 10px; color: #4dabf7; font-size: 28px;">visibility</i>
+                        What Are Context Windows?
+                    </h2>
+                    <div class="key-points">
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text"><span class="highlight">Definition:</span> Number of tokens processed simultaneously through the prompt</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text"><span class="highlight">Token:</span> Represents a word or part of a word</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text"><span class="highlight">How it works:</span> Every token analyzed against every other token</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <h2 style="font-size: 24px; font-weight: 600; color: #003366; margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="material-icons" style="margin-right: 10px; color: #4dabf7; font-size: 28px;">history</i>
+                        Evolution of Context Windows
+                    </h2>
+                    <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <div style="text-align: center; flex: 1;">
+                            <div style="font-size: 18px; font-weight: 600; color: #003366; margin-bottom: 5px;">Early GPT-3</div>
+                            <div style="font-size: 16px; color: #555;">~3,000 tokens</div>
+                        </div>
+                        <div style="text-align: center; flex: 1;">
+                            <div style="font-size: 18px; font-weight: 600; color: #003366; margin-bottom: 5px;">Mid-2023</div>
+                            <div style="font-size: 16px; color: #555;">~32,000 tokens</div>
+                        </div>
+                        <div style="text-align: center; flex: 1;">
+                            <div style="font-size: 18px; font-weight: 600; color: #003366; margin-bottom: 5px;">Current Models</div>
+                            <div style="font-size: 16px; color: #555;">Millions of tokens</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h2 style="font-size: 24px; font-weight: 600; color: #003366; margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="material-icons" style="margin-right: 10px; color: #4dabf7; font-size: 28px;">settings</i>
+                        Managing Context Effectively
+                    </h2>
+                    <div class="key-points">
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">LLMs are <span class="highlight">stateless</span> - no memory between requests</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text"><span class="highlight">Distractor problem:</span> Irrelevant information reduces effectiveness</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">Larger context windows aren't always better</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                <div class="image-container">
+                    <img src="https://sfile.chatglm.cn/images-ppt/d7b94b84dc2e.jpg" alt="Context Window Visualization">
+                </div>
+                
+                <div style="background-color: #f0f7ff; border-left: 4px solid #4dabf7; padding: 15px 20px; border-radius: 4px;">
+                    <h3 style="font-size: 20px; font-weight: 600; color: #003366; margin-bottom: 8px;">Key Considerations</h3>
+                    <div class="key-points">
+                        <div class="point">
+                            <i class="material-icons">priority_high</i>
+                            <p class="point-text">Balance between <span class="highlight">conversation history</span> and context limits</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">priority_high</i>
+                            <p class="point-text">Know when to <span class="highlight">start fresh</span> vs continuing a conversation</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">priority_high</i>
+                            <p class="point-text">Strategic <span class="highlight">information pruning</span> for optimal results</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Module 2 Continued: Managing Context Effectively -->
+    <div id="slide5" class="slide">
+        <div class="header">
+            <h1 class="title">Module 2 Continued: Managing Context Effectively</h1>
+        </div>
+        <div class="content" style="display: flex; gap: 40px;">
+            <div style="flex: 1;">
+                <div style="margin-bottom: 25px;">
+                    <h2 style="font-size: 24px; font-weight: 600; color: #003366; margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="material-icons" style="margin-right: 10px; color: #4dabf7; font-size: 28px;">memory</i>
+                        Stateless Nature of LLMs
+                    </h2>
+                    <div class="key-points">
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">LLMs have <span class="highlight">no memory</span> between requests</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">Each prompt is processed <span class="highlight">independently</span></p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">Conversation history must be <span class="highlight">explicitly included</span> in each prompt</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h2 style="font-size: 24px; font-weight: 600; color: #003366; margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="material-icons" style="margin-right: 10px; color: #4dabf7; font-size: 28px;">warning</i>
+                        The Distractor Problem
+                    </h2>
+                    <div class="key-points">
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text"><span class="highlight">Irrelevant information</span> in context windows reduces effectiveness</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">Models can get <span class="highlight">confused</span> by too much context</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">Larger context windows aren't always <span class="highlight">better</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                <div class="image-container">
+                    <img src="https://sfile.chatglm.cn/images-ppt/05932303434f.jpg" alt="Context Window Management">
+                </div>
+                
+                <div style="background-color: #f0f7ff; border-left: 4px solid #4dabf7; padding: 15px 20px; border-radius: 4px;">
+                    <h3 style="font-size: 20px; font-weight: 600; color: #003366; margin-bottom: 8px;">Strategies for Managing Context</h3>
+                    <div class="key-points">
+                        <div class="point">
+                            <i class="material-icons">filter_list</i>
+                            <p class="point-text"><span class="highlight">Prune</span> irrelevant conversation history</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">summarize</i>
+                            <p class="point-text"><span class="highlight">Summarize</span> long exchanges</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">refresh</i>
+                            <p class="point-text">Know when to <span class="highlight">start fresh</span> vs continuing</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">priority_high</i>
+                            <p class="point-text">Prioritize <span class="highlight">recent and relevant</span> information</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; background-color: #f0f7ff; color: #003366; font-weight: 600; font-size: 18px;">Approach</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; background-color: #f0f7ff; color: #003366; font-weight: 600; font-size: 18px;">Best For</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; background-color: #f0f7ff; color: #003366; font-weight: 600; font-size: 18px;">Token Efficiency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; font-size: 18px;">Full History</td>
+                            <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; font-size: 18px;">Short conversations</td>
+                            <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; font-size: 18px;"><i class="material-icons" style="color: #F44336;">close</i></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; font-size: 18px;">Summarized History</td>
+                            <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; font-size: 18px;">Medium conversations</td>
+                            <td style="padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; font-size: 18px;"><i class="material-icons" style="color: #FFC107;">remove</i></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; text-align: left; font-size: 18px;">Context Pruning</td>
+                            <td style="padding: 12px; text-align: left; font-size: 18px;">Long conversations</td>
+                            <td style="padding: 12px; text-align: left; font-size: 18px;"><i class="material-icons" style="color: #4CAF50;">check_circle</i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Module 3: Building Effective Prompts -->
+    <div id="slide6" class="slide">
+        <div class="header">
+            <h1 class="title">Module 3: Building Effective Prompts</h1>
+        </div>
+        <div class="content" style="display: flex; gap: 40px;">
+            <div style="flex: 1;">
+                <div style="margin-bottom: 25px;">
+                    <h2 style="font-size: 24px; font-weight: 600; color: #003366; margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="material-icons" style="margin-right: 10px; color: #4dabf7; font-size: 28px;">construction</i>
+                        The Minimum Viable Prompt
+                    </h2>
+                    <div class="key-points">
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">Two essential components for <span class="highlight">effective prompts</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="components-diagram">
+                    <div class="component-row">
+                        <div class="component-icon">
+                            <i class="material-icons">assignment</i>
+                        </div>
+                        <div class="component-details">
+                            <h3 class="component-title">Task</h3>
+                            <p class="component-description">What you want the model to do</p>
+                        </div>
+                    </div>
+                    
+                    <div class="component-row">
+                        <div class="component-icon">
+                            <i class="material-icons">info</i>
+                        </div>
+                        <div class="component-details">
+                            <h3 class="component-title">Context</h3>
+                            <p class="component-description">The situation in which you want it performed</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background-color: #f0f7ff; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <h3 style="font-size: 20px; font-weight: 600; color: #003366; margin-bottom: 15px; display: flex; align-items: center;">
+                        <i class="material-icons" style="margin-right: 10px; color: #4dabf7;">lightbulb</i>
+                        Example
+                    </h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 18px; font-weight: 600; color: #003366;">Task:</div>
+                            <div style="font-size: 18px; padding: 10px 15px; background-color: #ffffff; border-radius: 6px; border-left: 3px solid #4dabf7;">"Give me a recipe"</div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 18px; font-weight: 600; color: #003366;">Context:</div>
+                            <div style="font-size: 18px; padding: 10px 15px; background-color: #ffffff; border-radius: 6px; border-left: 3px solid #4dabf7;">"for a chocolate cake with vanilla frosting"</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="flex: 1;">
+                <div class="image-container">
+                    <img src="https://sfile.chatglm.cn/images-ppt/d10657e116f1.jpg" alt="Prompt Engineering Components">
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <h2 style="font-size: 24px; font-weight: 600; color: #003366; margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="material-icons" style="margin-right: 10px; color: #4dabf7; font-size: 28px;">add_circle</i>
+                        Adding More Context
+                    </h2>
+                    <div class="key-points">
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">More context <span class="highlight">narrows</span> responses</p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">Specific details lead to <span class="highlight">better outputs</span></p>
+                        </div>
+                        <div class="point">
+                            <i class="material-icons">check_circle</i>
+                            <p class="point-text">Balance between <span class="highlight">specificity</span> and flexibility</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background-color: #f0f7ff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <h3 style="font-size: 20px; font-weight: 600; color: #003366; margin-bottom: 15px; display: flex; align-items: center;">
+                        <i class="material-icons" style="margin-right: 10px; color: #4dabf7;">compare_arrows</i>
+                        Before & After
+                    </h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 18px; font-weight: 600; color: #003366;">Basic:</div>
+                            <div style="font-size: 18px; padding: 10px 15px; background-color: #ffffff; border-radius: 6px; border-left: 3px solid #4dabf7;">"Write an email"</div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div style="font-size: 18px; font-weight: 600; color: #003366;">With Context:</div>
+                            <div style="font-size: 18px; padding: 10px 15px; background-color: #ffffff; border-radius: 6px; border-left: 3px solid #4dabf7;">"Write a professional email to my team announcing the project deadline extension by two weeks"</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Module 3 Continued: Advanced Prompt Components -->
+    <div id="slide7" class="slide">
+        <div class="header">
+            <h1 class="title">Module 3 Continued: Advanced Prompt Components</h1>
+        </div>
+        <div class="content">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px;">
+                <div style="background-color: #f0f7ff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; height: 100%;">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <div style="width: 50px; height: 50px; background-color: #4dabf7; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 15px; flex-shrink: 0;">
+                            <i class="material-icons" style="font-size: 28px; color: white;">format_quote</i>
+                        </div>
+                        <h2 style="font-size: 24px; font-weight: 600; color: #003366;">Examples</h2>
+                    </div>
+                    <p style="font-size: 20px; line-height: 1.4; margin-bottom: 15px; flex-grow: 1;">
+                        Providing <span class="highlight">samples</span> of desired outputs to guide the model
+                    </p>
+                    <div style="background-color: white; border-radius: 6px; padding: 12px; border-left: 3px solid #4dabf7; font-size: 18px;">
+                        "Here's how I want you to format responses: [example]"
+                    </div>
+                </div>
+                
+                <div style="background-color: #f0f7ff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; height: 100%;">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <div style="width: 50px; height: 50px; background-color: #4dabf7; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 15px; flex-shrink: 0;">
+                            <i class="material-icons" style="font-size: 28px; color: white;">person</i>
+                        </div>
+                        <h2 style="font-size: 24px; font-weight: 600; color: #003366;">Persona</h2>
+                    </div>
+                    <p style="font-size: 20px; line-height: 1.4; margin-bottom: 15px; flex-grow: 1;">
+                        Defining the AI's <span class="highlight">role</span> and expertise
+                    </p>
+                    <div style="background-color: white; border-radius: 6px; padding: 12px; border-left: 3px solid #4dabf7; font-size: 18px;">
+                        "You are a master chef from Northern Switzerland"
+                    </div>
+                </div>
+                
+                <div style="background-color: #f0f7ff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; height: 100%;">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <div style="width: 50px; height: 50px; background-color: #4dabf7; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 15px; flex-shrink: 0;">
+                            <i class="material-icons" style="font-size: 28px; color: white;">view_quilt</i>
+                        </div>
+                        <h2 style="font-size: 24px; font-weight: 600; color: #003366;">Format</h2>
+                    </div>
+                    <p style="font-size: 20px; line-height: 1.4; margin-bottom: 15px; flex-grow: 1;">
+                        Specifying <span class="highlight">output structure</span> for consistency
+                    </p>
+                    <div style="background-color: white; border-radius: 6px; padding: 12px; border-left: 3px solid #4dabf7; font-size: 18px;">
+                        "Respond in bullet points, JSON format, under 200 words"
+                    </div>
+                </div>
+                
+                <div style="background-color: #f0f7ff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; height: 100%;">
+                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <div style="width: 50px; height: 50px; background-color: #4dabf7; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 15px; flex-shrink: 0;">
+                            <i class="material-icons" style="font-size: 28px; color: white;">mood</i>
+                        </div>
+                        <h2 style="font-size: 24px; font-weight: 600; color: #003366;">Tone</h2>
+                    </div>
+                    <p style="font-size: 20px; line-height: 1.4; margin-bottom: 15px; flex-grow: 1;">
+                        Setting the <span class="highlight">communication style</span> for appropriate responses
+                    </p>
+                    <div style="background-color: white; border-radius: 6px; padding: 12px; border-left: 3px solid #4dabf7; font-size: 18px;">
+                        "Use a friendly, conversational tone with occasional humor"
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background-color: #f0f7ff; border-radius: 8px; padding: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-top: 25px;">
+                <h2 style="font-size: 24px; font-weight: 600; color: #003366; margin-bottom: 15px; display: flex; align-items: center;">
+                    <i class="material-icons" style="margin-right: 10px; color: #4dabf7; font-size: 28px;">sync</i>
+                    How Components Work Together
+                </h2>
+                <div style="display: flex; gap: 20px;">
+                    <div style="flex: 1; display: flex; align-items: flex-start;">
+                        <i class="material-icons" style="color: #4dabf7; margin-right: 10px; font-size: 20px; flex-shrink: 0;">check_circle</i>
+                        <p style="font-size: 20px; line-height: 1.4;">
+                            Components <span class="highlight">reinforce each other</span> to create highly specific outputs
+                        </p>
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: flex-start;">
+                        <i class="material-icons" style="color: #4dabf7; margin-right: 10px; font-size: 20px; flex-shrink: 0;">check_circle</i>
+                        <p style="font-size: 20px; line-height: 1.4;">
+                            Proper combination <span class="highlight">reduces ambiguity</span> and improves consistency
+                        </p>
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: flex-start;">
+                        <i class="material-icons" style="color: #4dabf7; margin-right: 10px; font-size: 20px; flex-shrink: 0;">check_circle</i>
+                        <p style="font-size: 20px; line-height: 1.4;">
+                            Strategic use of components <span class="highlight">minimizes iterations</span> needed
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Module 4: Prompt Engineering Methodologies -->
+    <div id="slide8" class="slide">
+        <div class="header">
+            <h1 class="title">Module 4: Prompt Engineering Methodologies</h1>
+        </div>
+        <div class="content" style="display: flex; gap: 40px;">
+            <div style="flex: 1;">
+                <h2 style="font-size: 28px; font-weight: 600; color: #003366; margin-bottom: 20px; display: flex; align-items: center;">
+                    <i class="material-icons" style="margin-right: 12px; color: #4dabf7; font-size: 32px;">architecture</i>
+                    The Four S's Framework
+                </h2>
+                <div class="four-s-grid">
+                    <div class="s-card">
+                        <div class="s-icon">
+                            <i class="material-icons">gps_fixed</i>
+                        </div>
+                        <div class="s-content">
+                            <h3 class="s-title">Specificity</h3>
+                            <p class="s-description">Being <span class="highlight">precise</span> without repetition</p>
+                        </div>
+                    </div>
+                    
+                    <div class="s-card">
+                        <div class="s-icon">
+                            <i class="material-icons">lightbulb</i>
+                        </div>
+                        <div class="s-content">
+                            <h3 class="s-title">Simplicity</h3>
+                            <p class="s-description">Keeping prompts <span class="highlight
